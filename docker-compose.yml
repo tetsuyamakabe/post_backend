@@ -60,6 +60,24 @@ services:
           PMA_HOST: mysql
       networks:
           - sail
+    swagger-ui-watcher:
+      build: swagger-ui-watcher/build
+      image: swagger-ui-watcher
+      container_name: swagger-ui-watcher
+      ports:
+        - 9999:8000
+      volumes:
+        - ./swagger:/swagger
+      command: /swagger/swagger.yaml
+
+    apisprout:
+      image: danielgtaylor/apisprout
+      container_name: apisprout
+      ports:
+        - 8000:8000
+      volumes:
+        - ./swagger/swagger.yaml:/swagger.yaml
+      command: /swagger.yaml --watch
 networks:
     sail:
         driver: bridge
